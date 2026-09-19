@@ -12,28 +12,58 @@ function showFallback() {
   statusEl.hidden = false;
 }
 
+// Put a transparent clickable link over each link that exists inside the PDF.
+function addLinks(wrap, annotations, cssViewport) {
+  for (const a of annotations) {
+    if (a.subtype !== "Link" || !a.url) continue;
+    if (!/^(https?:|mailto:|tel:)/i.test(a.url)) continue;
+    const [x1, y1, x2, y2] = cssViewport.convertToViewportRectangle(a.rect);
+    const link = document.createElement("a");
+    link.href = a.url;
+    if (/^https?:/i.test(a.url)) {
+      link.target = "_blank";
+      link.rel = "noopener";
+    }
+    link.setAttribute("aria-label", a.url);
+    link.style.left = Math.min(x1, x2) + "px";
+    link.style.top = Math.min(y1, y2) + "px";
+    link.style.width = Math.abs(x2 - x1) + "px";
+    link.style.height = Math.abs(y2 - y1) + "px";
+    wrap.appendChild(link);
+  }
+}
+
 async function renderAll() {
   const width = pagesEl.clientWidth;
   if (!pdfDoc || !width) return;
   const myId = ++renderId;
   lastWidth = width;
   const dpr = window.devicePixelRatio || 1;
-  const canvases = [];
+  const sheets = [];
 
   for (let n = 1; n <= pdfDoc.numPages; n++) {
     const page = await pdfDoc.getPage(n);
     const base = page.getViewport({ scale: 1 });
-    const viewport = page.getViewport({ scale: (width / base.width) * dpr });
+    const cssScale = width / base.width;
+    const viewport = page.getViewport({ scale: cssScale * dpr });
+    const cssViewport = page.getViewport({ scale: cssScale });
+
     const canvas = document.createElement("canvas");
     canvas.width = Math.floor(viewport.width);
     canvas.height = Math.floor(viewport.height);
     canvas.setAttribute("role", "img");
     canvas.setAttribute("aria-label", "Resume page " + n + " of " + pdfDoc.numPages);
     await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
+
+    const wrap = document.createElement("div");
+    wrap.className = "page";
+    wrap.appendChild(canvas);
+    addLinks(wrap, await page.getAnnotations(), cssViewport);
+
     if (myId !== renderId) return; // a newer render started, drop this one
-    canvases.push(canvas);
+    sheets.push(wrap);
   }
-  pagesEl.replaceChildren(...canvases);
+  pagesEl.replaceChildren(...sheets);
   statusEl.hidden = true;
 }
 
