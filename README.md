@@ -7,21 +7,6 @@
 
 ---
 
-## วิธีรันบนเครื่อง
-
-```bash
-# โคลน repository
-git clone https://github.com/Peeranat-Non/resume10291.github.io.git
-cd resume10291.github.io
-
-# รันด้วย static server ตัวใดก็ได้
-python -m http.server 8000
-```
-
-จากนั้นเปิด `http://localhost:8000` ในเบราว์เซอร์
-
-> แนะนำให้รันผ่าน local server แทนการเปิดไฟล์ `index.html` ตรง ๆ เพื่อหลีกเลี่ยงข้อจำกัดของเบราว์เซอร์ในการโหลดไฟล์ PDF
-
 ## วิธีอัปเดต Resume
 
 1. แทนที่ไฟล์ `Peeranat_Anunteratat_Resume.pdf` ด้วยเวอร์ชันใหม่ โดยใช้ชื่อไฟล์เดิม
