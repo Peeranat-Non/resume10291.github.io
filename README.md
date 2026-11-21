@@ -2,8 +2,7 @@
 
 เว็บไซต์ Resume ส่วนตัวของ **Peeranat Anunteratat** นักศึกษาชั้นปีที่ 3 สาขาคณิตศาสตร์และวิทยาการคอมพิวเตอร์ ที่กำลังมองหาโอกาสฝึกงานแบบ Co-op ในตำแหน่ง Software Engineer หรือ Full-Stack Developer Intern
 
-🔗 **เว็บไซต์:** [resume10291.vercel.app](https://resume10291.vercel.app/)
-📄 **Resume (PDF):** [ดาวน์โหลด](https://resume10291.vercel.app/Peeranat_Anunteratat_Resume.pdf)
+🔗 **เว็บไซต์ Resume (PDF):** [resume10291.vercel.app](https://resume10291.vercel.app/)
 
 ---
 
